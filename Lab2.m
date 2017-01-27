@@ -20,84 +20,88 @@ H_measurement2=XOSYS2./XI;
 h_measurement1 = ifft(H_measurement1);
 h_measurement2 = ifft(H_measurement2);
 
-H_dut1 = XO1./XOSYS1;
-H_dut2 = XO2./XOSYS2;
+H_dut1 = (XO1./XOSYS1);
+H_dut2 = (XO2./XOSYS2);
 
 h_dut1 = ifft(H_dut1);
 h_dut2 = ifft(H_dut2);
 
-%[h_measurement1,r1] = deconv(xosys(:,1),xi(:,1));
-%[h_measurement2,r2] = deconv(xosys(:,2),xi(:,2));
-
-%H_measurement1 = fft(h_measurement1);
-%H_measurement2 = fft(h_measurement2);
-
-%[h_dut1,r1] = deconv(xosys(:,1),xo(:,1));
-%[h_dut2,r2] = deconv(xosys(:,2),xo(:,2));
-
-%H_dut1 = fft(h_dut1);
-%H_dut2 = fft(h_dut2);
-
 %c
 figure(1)
+subplot(2,3,1)
 semilogx(10*log10(abs(H_measurement1)))
 xlabel('f/Hz');
 ylabel('|H_{measurement1}| in dB');
-figure(2)
+title('FFT Measurement 1')
+
+subplot(2,3,2) 
 semilogx(unwrap(angle(H_measurement1)))
 xlabel('\Omega');
 ylabel('\phi(H_{measurement1})');
-figure(3)
+title('FFT Phase Measurement 1');
+
+subplot(2,3,3) 
 semilogx(abs(h_measurement1));
 xlabel('k');
 ylabel('|h_{measurement1}|');
 
-figure(4)
+subplot(2,3,4) 
 semilogx(10*log10(abs(H_measurement2)))
 xlabel('\Omega');
 ylabel('|H_{measurement2}| in dB');
-figure(5)
+title('FFT Measurement 2');
+
+subplot(2,3,5) 
 semilogx(unwrap(angle(H_measurement2)))
 xlabel('\Omega');
 ylabel('\phi(H_{measurement2})');
-figure(6)
+title('Phase Measurement 2')
+
+subplot(2,3,6)
 semilogx(abs(h_measurement2));
 xlabel('k');
 ylabel('|h_{measurement2}|');
-
-figure(7)
+%Following these Figures we can conclude, that the measurement systems are
+%alike
+%sadly we could not find the group delays as we were not able to propperly extract the filter coefficients that 
+%[gd,w] = grpdelay(b,a) demands as input
+figure(2)
+subplot(2,3,1)
 semilogx(10*log10(abs(H_dut1)))
 xlabel('\Omega');
 ylabel('|H_{dut1}| in dB');
-figure(8)
+title('FFT DUT1')
+
+subplot(2,3,2)
 semilogx(unwrap(angle(H_dut1)))
 xlabel('\Omega');
 ylabel('\phi(H_{dut1})');
-figure(9)
+title('FFT Phase DUT1');
+
+subplot(2,3,3)
 semilogx(abs(h_dut1));
 xlabel('k');
 ylabel('|h_{dut1}|');
+title('dut1');
 
-figure(10)
+subplot(2,3,4)
 semilogx(10*log10(abs(H_dut2)))
 xlabel('\Omega');
 ylabel('|H_{dut2}| in dB');
-figure(11)
+title('FFT DUT2');
+
+subplot(2,3,5)
 semilogx(unwrap(angle(H_dut2)))
 xlabel('\Omega');
 ylabel('\phi(H_{dut2})');
-figure(12)
+title('FFT Phase DUT2');
+
+subplot(2,3,6)
 semilogx(abs(h_dut2));
 xlabel('k');
 ylabel('|h_{dut2}|');
+title('DUT2');
 
-[gd,w]=grpdelay(h_measurement1);
-semilogx(w,gd);
+%DUT1 is a low-pass filter for low frequencies
+%DUT2 is a bandpass filter
 
-% semilogx(20*log10(abs(fftshift(XOSYS1))))
-% hold on
-% semilogx(20*log10(abs(fftshift(XO1))))
-% 
-% semilogx(20*log10(abs(fftshift(XOSYS2))))
-% hold on
-% semilogx(20*log10(abs(fftshift(XO2))),'black')
